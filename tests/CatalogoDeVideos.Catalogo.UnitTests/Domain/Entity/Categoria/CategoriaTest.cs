@@ -1,4 +1,5 @@
 ﻿using CatalogoDeVideos.Catalogo.Domain.Exceptions;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,22 @@ namespace CatalogoDeVideos.Catalogo.UnitTests.Domain.Entity.Categoria
             var categoria = new DomainEntity.Categoria(obj.Nome, obj.Descricao);
             var dataDepois = DateTime.Now;
 
-            Assert.NotNull(categoria);
-            Assert.Equal(obj.Nome, categoria.Nome);
-            Assert.Equal(obj.Descricao, categoria.Descricao);
-            Assert.NotEqual(default(Guid), categoria.Id);
-            Assert.NotEqual(default(DateTime), categoria.DataCriacao);
-            Assert.True(categoria.DataCriacao > dataAntes);
-            Assert.True(categoria.DataCriacao < dataDepois);
-            Assert.True(categoria.Ativo);
+            categoria.Should().NotBeNull();
+            categoria.Nome.Should().Be(obj.Nome);
+            categoria.Descricao.Should().Be(obj.Descricao);
+            categoria.Id.Should().NotBe(default(Guid));
+            categoria.DataCriacao.Should().NotBe(default(DateTime));
+            (categoria.DataCriacao > dataAntes).Should().BeTrue();
+            (categoria.DataCriacao < dataDepois).Should().BeTrue();
+            (categoria.Ativo).Should().BeTrue();
+            //Assert.NotNull(categoria);
+            //Assert.Equal(obj.Nome, categoria.Nome);
+            //Assert.Equal(obj.Descricao, categoria.Descricao);
+            //Assert.NotEqual(default(Guid), categoria.Id);
+            //Assert.NotEqual(default(DateTime), categoria.DataCriacao);
+            //Assert.True(categoria.DataCriacao > dataAntes);
+            //Assert.True(categoria.DataCriacao < dataDepois);
+            //Assert.True(categoria.Ativo);
         }
 
         [Theory(DisplayName = nameof(InstantiateAtivo))]
